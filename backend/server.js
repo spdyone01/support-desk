@@ -1,8 +1,9 @@
+const path = require('path');
 const express = require('express');
-const colors = require('colors')
+const colors = require('colors');
 const dotenv = require('dotenv').config();
 const { errorHandler } = require('./middleware/errorMiddleware');
-const { connectDB } = require('./config/db')
+const { connectDB } = require('./config/db');
 const PORT = process.env.port || 5000;
 
 // Connect to database
@@ -19,7 +20,21 @@ app.get('/', (req, res) => {
 
 // Routes
 app.use('/api/users', require('./routes/userRoutes'));
-app.use('/api/tickets', require('./routes/ticketRoutes'))
+app.use('/api/tickets', require('./routes/ticketRoutes'));
+
+// Serve Frontend
+if (process.env.NODE_ENV === 'production') {
+  // Set build folder as static
+  app.use(express.static(path.join(__dirname, '../frontend/build')));
+
+  app.get('*', (req, res) =>
+    res.sendFile(__dirname, '../', 'fontend', 'build', 'index.html')
+  );
+} else {
+  app.get('/', (req, res) => {
+    res.status(200).json({ message: 'Welcome to the support desk API' });
+  });
+}
 
 app.use(errorHandler);
 
