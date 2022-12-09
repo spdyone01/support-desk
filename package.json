@@ -8,7 +8,7 @@
     "server": "nodemon backend/server.js",
     "client": "npm start --prefix frontend",
     "dev": "concurrently \"npm run server\" \"npm run client\"",
-    "netlify-postbuild": "NPM_CONFIG_PRODUCTION=false CI=false npm install --prefix frontend && npm run build --prefix frontend"
+    "heroku-postbuild": "NPM_CONFIG_PRODUCTION=false CI=false npm install --prefix frontend && npm run build --prefix frontend"
   },
   "author": "Trevor Widdison",
   "license": "MIT",
